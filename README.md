@@ -76,11 +76,27 @@ app.redis.getConnInstance(db)
 //释放redis链接 conn为redis链接
 app.redis.doRelease(conn)
 
-//统一设置赋值 conn为redis链接  key为键  value为string或object
-app.redis.set(conn, key, value)
+//统一设置赋值 conn为redis链接  key为键  
+//value为string或object 
+//value为string时
+//subvalue为undefined则value为存储的值
+//subvalue不为undefined则value为key对应对象的键,subvalue为该键的值
+app.redis.set(conn, key, value,subvalue)
 
-//统一获取值 conn为redis链接  key为键 objectkey为空时获取字符串值、objectkey不为空时获取为对象键对应的值
-app.redis.get(conn, key, objectKey) 
+//统一获取值 conn为redis链接  key为键
+// isObject和objectKey为undefined 时获取字符串值
+// isObject为true，objectKey为undefined 时获取对象
+// isObject为true，objectKey不为为undefined 时获取对象中objectKey对应的值
+app.redis.get(conn, key,isObject, objectKey) 
+
+ // 设置一个key的过期的秒数
+app.redis.expire(conn, key, seconds)
+
+// 查询一个key是否存在
+app.redis.exists(conn, key)
+
+//删除key
+app.redis.del(conn, key)
  ```
 ## Example
 赋值获取值
@@ -95,7 +111,7 @@ app.redis.get(conn, key, objectKey)
 ```js
    const conn = app.redis.getConn();
     await app.redis.set(conn, 'nameObj', { age: 12, job: 'programer' });
-    const result = await app.redis.get(conn, 'nameObj', 'job');
+    const result = await app.redis.get(conn, 'nameObj', true,'job');
     app.logger.info('shoud get result get obj', result);
     assert.equal(result, 'programer');
     app.redis.doRelease(conn);

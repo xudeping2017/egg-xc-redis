@@ -10,13 +10,13 @@ const redis = {
     db1: { // instanceName. See below
       port: 6379, // Redis port
       host: 'localhost', // Redis host
-      password: '',
+      password: 'dalitek@123',
       db: 1,
     },
     db2: {
       port: 6379,
       host: 'localhost',
-      password: '',
+      password: 'dalitek@123',
       db: 2,
     },
   },

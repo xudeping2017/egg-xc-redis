@@ -24,52 +24,85 @@
 Description here.
 -->
 
-## 依赖说明
+## Install
 
-### 依赖的 egg 版本
+```bash
+$ npm i egg-xc-redis --save
+```
 
-egg-xc-redis 版本 | egg 1.x
---- | ---
-1.x | 😁
-0.x | ❌
-
-### 依赖的插件
-<!--
-
-如果有依赖其它插件，请在这里特别说明。如
-
-- security
-- multipart
-
--->
-
-## 开启插件
+## Usage
 
 ```js
-// config/plugin.js
+// {app_root}/config/plugin.js
 exports.xcRedis = {
   enable: true,
   package: 'egg-xc-redis',
 };
 ```
 
-## 使用场景
+## Configuration
 
-- Why and What: 描述为什么会有这个插件，它主要在完成一件什么事情。
-尽可能描述详细。
-- How: 描述这个插件是怎样使用的，具体的示例代码，甚至提供一个完整的示例，并给出链接。
+```js
+// {app_root}/config/config.default.js
+exports.xcRedis = {
+  {
+  clients: {
+    db1: { // instanceName. See below
+      port: 6379, // Redis port
+      host: 'localhost', // Redis host
+      password: '',
+      db: 1,
+    },
+    db2: {
+      port: 6379,
+      host: 'localhost',
+      password: '',
+      db: 2,
+    },
+  },
+};
+针对配置可覆盖
+```
 
-## 详细配置
+see [config/config.default.js](config/config.default.js) for more detail.
+##API
+```js
+ //获取redis链接 默认配置为db1
+app.redis.getConn()
 
-请到 [config/config.default.js](config/config.default.js) 查看详细配置项说明。
+//获取链接实例 db为 db1,db2这种key值
+app.redis.getConnInstance(db)
 
-## 单元测试
+//释放redis链接 conn为redis链接
+app.redis.doRelease(conn)
 
-<!-- 描述如何在单元测试中使用此插件，例如 schedule 如何触发。无则省略。-->
+//统一设置赋值 conn为redis链接  key为键  value为string或object
+app.redis.set(conn, key, value)
 
-## 提问交流
+//统一获取值 conn为redis链接  key为键 objectkey为空时获取字符串值、objectkey不为空时获取为对象键对应的值
+app.redis.get(conn, key, objectKey) 
+ ```
+## Example
+赋值获取值
+```js
+    const conn = app.redis.getConn();
+    await app.redis.set(conn, 'name', 'xiaoming');
+    const result = await app.redis.get(conn, 'name');
+    assert.equal(result, 'xiaoming');
+    app.redis.doRelease(conn);
+```
+赋值获取对象
+```js
+   const conn = app.redis.getConn();
+    await app.redis.set(conn, 'nameObj', { age: 12, job: 'programer' });
+    const result = await app.redis.get(conn, 'nameObj', 'job');
+    app.logger.info('shoud get result get obj', result);
+    assert.equal(result, 'programer');
+    app.redis.doRelease(conn);
+```
+## Questions & Suggestions
 
-请到 [egg issues](https://github.com/eggjs/egg/issues) 异步交流。
+Please open an issue [here](https://github.com/xudeping2017/egg-xc-redis/issues).
 
 ## License
 

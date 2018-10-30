@@ -2524,6 +2524,11 @@ egg-watcher@^3.1.0:
     sdk-base "^3.5.0"
     wt "^1.2.0"
 
+egg-xc-error@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/egg-xc-error/-/egg-xc-error-1.0.8.tgz#52e994e3b93444adf59a2b91648bee484bf42c26"
+  integrity sha512-nwPECamvHpdiyBNzO+oPsWmuEcP5q7BKNrzKkYMDkqHp9sKgIY+T32dvVGO+ODceSh2eNF8rPpu0hT5nE3I1zA==
+
 egg@^2.0.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/egg/-/egg-2.12.0.tgz#2f4dc8391e1d2255c192adff4046912eb6468214"
